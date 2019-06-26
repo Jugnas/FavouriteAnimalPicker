@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>Favorite Animal Picker</title>
+		<style type="text/css">
+			.title{
+				text-align: center;
+			}
+			#container{
+				display: flex;
+				margin: 10px auto;
+				justify-content: space-around;
+			}
+			.box{
+				width: 200px;
+				height: 200px;
+				margin: 10px auto;
+				border: 2px solid black;
+			}
+			img{
+				width: 100%;
+				height: 100%;
+			}
+		</style>
+	</head>
+	<body>
+		<h1 class="title">Favorite Animal Picker</h1>
+		<div id="container">
+			<div class="box">
+				<img src="" id="animalLeft">
+			</div>
+			<div class="box">
+				<img src="" id="animalRight">
+			</div>
+		</div>
+		<p>Vous aimez : <span id="like"></span></p>
+		<h2>Classement final : </h2><span id="result"></span>
+
+		<script type="text/javascript">
+
+			//Tire un numéro au hasard correspondant à l'indice de la liste d'animaux
+			function chargerImg(animalRandom){
+				var	animalRandom = Math.floor(Math.random()*(animalImgList.length));
+				return animalRandom;
+			}
+
+			//Retire l'animal selectionné de la liste
+			function retirerImg(animalRandom){  
+				animalImgList.splice(animalRandom, 1);
+				animalList.splice(animalRandom, 1);
+				console.log(animalImgList);
+				console.log(animalList);
+			};
+
+			//On crée une liste d'animaux
+			let animalImgList = ["img/chat.jpg", "img/chien.jpg", "img/hamster.jpg", "img/poisson.jpg", "img/perruche.jpg"];
+			let animalList = ["chat", "chien", "hamster", "poisson", "perruche"];
+
+			//On crée une liste pour les animaux éliminés
+			let eliminateAnimalImgList = [];
+			let eliminateAnimalList = [];
+			console.log(animalImgList);
+			console.log(animalList);
+
+			//On déclare les deux animaux à comparer 
+			let animalBoxLeft = document.getElementById("animalLeft");
+			let animalBoxRight = document.getElementById("animalRight");
+
+			//Empêche de tirer au sort le même animal dans les deux cases
+			let animalLeftRandom, animalRightRandom;
+			while (animalLeftRandom == animalRightRandom){
+				animalLeftRandom = chargerImg(animalLeftRandom);
+				animalRightRandom = chargerImg(animalRightRandom);
+			}
+			console.log(animalLeftRandom);
+			console.log(animalRightRandom);
+
+			//Affiche les images sources des animaux
+			animalBoxLeft.src = animalImgList[animalLeftRandom];
+			animalLeft = animalList[animalLeftRandom];
+			animalBoxRight.src = animalImgList[animalRightRandom];
+			animalRight = animalList[animalRightRandom];
+			console.log(animalLeft);
+			console.log(animalBoxLeft.src);
+			console.log(animalRight);
+			console.log(animalBoxRight.src);
+
+			//Permet de charger au hasard un animal dans les deux cases au clic sur une des deux cases
+
+			//On déclare le nombre d'animaux pour faire le classement
+			let NbAnimals = animalList.length;
+
+			//La boucle se finit lorsqu'il n'y a plus qu'un seul animal dans la liste
+			for (var cpt = 0; cpt < NbAnimals; cpt ++) {
+
+				//On déclare le nombre d'animaux restant dans la liste
+				var RemainAnimalImgList = animalImgList;
+				var NbRemainAnimals = animalList.length;
+
+				//Si on clique dans la case gauche 				
+				animalBoxLeft.onclick = function () {
+
+					//Tant qu'il y a plus de 2 animaux dans la liste 
+					if (animalList.length > 2) {
+
+					//Affiche l'animal sauvegardé dans le texte
+						retirerImg(animalLeftRandom);
+						var like = document.getElementById("like");
+						like.insertAdjacentText("afterbegin", animalLeft + ", ");
+
+						//Charge les animaux suivants
+						animalLeftRandom = chargerImg(animalLeftRandom);
+						animalRightRandom = chargerImg(animalRightRandom);
+
+						//Empêche de tirer au sort le même animal dans les deux cases
+						while (animalLeftRandom == animalRightRandom){
+							animalLeftRandom = chargerImg(animalLeftRandom);
+							animalRightRandom = chargerImg(animalRightRandom);
+						}
+						console.log(animalLeftRandom);
+						console.log(animalRightRandom);
+						animalLeft = animalList[animalLeftRandom];
+						animalBoxLeft.src = animalImgList[animalLeftRandom];
+						animalRight = animalList[animalRightRandom];
+						animalBoxRight.src = animalImgList[animalRightRandom];
+						console.log(animalLeft);
+						console.log(animalBoxLeft.src);
+						console.log(animalRight);
+						console.log(animalBoxRight.src);
+					}
+
+					//S'il y a 2 animaux dans la liste
+					else if (animalList.length == 2) {
+						retirerImg(animalLeftRandom);
+						var like = document.getElementById("like");
+						like.insertAdjacentText("afterbegin", animalLeft + ", ");
+						animalLeftRandom = chargerImg(animalLeftRandom);
+						animalRightRandom = chargerImg(animalRightRandom);
+						console.log(animalLeftRandom);
+						console.log(animalRightRandom);
+						animalLeft = animalList[animalLeftRandom];
+						animalBoxLeft.src = animalImgList[animalLeftRandom];
+						animalRight = animalList[animalRightRandom];
+						animalBoxRight.src = animalImgList[animalRightRandom];
+						console.log(animalLeft);
+						console.log(animalBoxLeft.src);
+						console.log(animalRight);
+						console.log(animalBoxRight.src);
+					}
+
+					//S'il en reste une seule : enlever l'animal éliminé et refaire la boucle
+					else {
+						//Affiche l'animal éliminé
+						var result = document.getElementById("result");
+						result.insertAdjacentHTML("afterbegin", "<br>" + NbRemainAnimals + ") " + animalLeft);
+					}
+				}
+				animalList.splice(animalLeftRandom, 1);
+						animalImgList.splice(animalLeftRandom, 1);
+						while (animalLeftRandom == animalRightRandom){
+							animalLeftRandom = chargerImg(animalLeftRandom);
+							animalRightRandom = chargerImg(animalRightRandom);
+						}
+						console.log(animalLeftRandom);
+						console.log(animalRightRandom);
+				//Permet de charger au hasard un animal dans les deux cases au clic sur une des deux cases
+				//Retire l'animal selectionné de la liste
+				animalBoxRight.onclick = function () {
+					if (animalList.length > 2) {
+						//Afficher l'animal sauvegardé dans le texte
+						retirerImg(animalRightRandom);
+						var like = document.getElementById("like");
+						like.insertAdjacentText("afterbegin", animalRight + ", ");
+						animalLeftRandom = chargerImg(animalLeftRandom);
+						animalRightRandom = chargerImg(animalRightRandom);
+						//Empêche de tirer au sort le même animal dans les deux cases
+						while (animalLeftRandom == animalRightRandom){
+							animalLeftRandom = chargerImg(animalLeftRandom);
+							animalRightRandom = chargerImg(animalRightRandom);
+						}
+						console.log(animalLeftRandom);
+						console.log(animalRightRandom);
+						animalLeft = animalList[animalLeftRandom];
+						animalBoxLeft.src = animalImgList[animalLeftRandom];
+						animalRight = animalList[animalRightRandom];
+						animalBoxRight.src = animalImgList[animalRightRandom];
+						console.log(animalLeft);
+						console.log(animalBoxLeft.src);
+						console.log(animalRight);
+						console.log(animalBoxRight.src);
+					}
+					else if (animalList.length == 2) {
+						retirerImg(animalRightRandom);
+						var like = document.getElementById("like");
+						like.insertAdjacentText("afterbegin", animalRight + ", ");
+						animalLeftRandom = chargerImg(animalLeftRandom);
+						animalRightRandom = chargerImg(animalRightRandom);
+						console.log(animalLeftRandom);
+						console.log(animalRightRandom);
+						animalLeft = animalList[animalLeftRandom];
+						animalBoxLeft.src = animalImgList[animalLeftRandom];
+						animalRight = animalList[animalRightRandom];
+						animalBoxRight.src = animalImgList[animalRightRandom];
+						console.log(animalLeft);
+						console.log(animalBoxLeft.src);
+						console.log(animalRight);
+						console.log(animalBoxRight.src);
+					}
+					else {
+						var result = document.getElementById("result");
+						result.insertAdjacentHTML("afterbegin", "<br>" + NbRemainAnimals + ") " + animalRight);
+					}
+				}
+			}
+		</script>
+	</body>
+</html>
